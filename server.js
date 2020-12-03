@@ -19,9 +19,12 @@ app.get("/", function (req, res) {
 });
 
 app.get("/api/whoami", function (req, res) {
-  const { ip, headers } = req;
-  const language = req.headers["accept-language"];
-  const software = req.headers["user-agent"];
+  const { headers } = req;
+  const ip = /::ffff:/.test(req.ip)
+    ? req.ip.replace("::ffff:", "")
+    : req.ip.replace("::", "");
+  const language = headers["accept-language"];
+  const software = headers["user-agent"];
   res.json({ ip, language, software });
 });
 
